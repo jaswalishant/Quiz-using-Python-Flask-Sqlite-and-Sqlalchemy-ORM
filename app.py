@@ -1,24 +1,32 @@
-from flask import Flask, render_template, request,session, redirect, url_for
-from data import engine, User, userScore, GK_questions, sports_questions, animals_questions, science_questions, computer_questions
+from flask import Flask
+from data import engine
 from sqlalchemy.orm import sessionmaker
+from register import register
+from login import login
+from dashboard import dashboard
+from quiz import quiz
+from score import score
+
 
 app = Flask(__name__)
-
+app.config['SECRET_KEY']='super_secret_key'
 Session= sessionmaker(bind=engine)
 session=Session()
-@app.route('/', methods=['GET', 'POST'])
-def home():
-    if request.method=="POST":
-        q=request.form.get('question')
-        c=request.form.get('correct')
-        i1=request.form.get('incorrect1')
-        i2=request.form.get('incorrect2')
-        i3=request.form.get('incorrect3')
 
-        Q=animals_questions(question=q, correct=c, incorrect1=i1, incorrect2=i2, incorrect3=i3)
-        session.add(Q)
-        session.commit()
-    return render_template("index.html")
+# page for registration
+app.register_blueprint(register)
 
+# page for login
+app.register_blueprint(login)
+
+# page for dashboard
+app.register_blueprint(dashboard)
+
+# page for quiz index
+app.register_blueprint(quiz)
+
+# page for previous results of user
+app.register_blueprint(score)
+    
 if __name__=='__main__':
     app.run(debug=True)
