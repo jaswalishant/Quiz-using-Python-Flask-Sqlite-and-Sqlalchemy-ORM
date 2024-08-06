@@ -1,4 +1,4 @@
-from flask import render_template, Blueprint
+from flask import render_template, Blueprint, redirect, url_for, request
 from sqlalchemy.orm import sessionmaker
 from data import engine, userScore
 from login import get_name
@@ -32,6 +32,12 @@ def storing_score(user):
             score_check[index]="Quiz not Submitted"
     return score_check, column_name
 
+# re-rendering previous results
+@score.route('/re_render', methods=['GET', 'POST'])
+def clearing():
+    if request.method=='POST':
+        score_check.clear()
+    return redirect(url_for('score.previous_result'))
 
 # displaying results of previous quizes
 @score.route('/previous_results')
@@ -40,3 +46,4 @@ def previous_result():
     storing_score(user)
     length=len(score_check)
     return render_template('previous_results.html',user=user, score_check=score_check, column_name=column_name, length=length)
+    

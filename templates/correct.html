@@ -14,11 +14,22 @@
           <ol type="numbers">
             {%for i in range(length)%}
             <li>
-              <p>{{Questions[i]}}</p>
+              <p>{{Questions_correct[i]}}</p>
               <div class="answers"><span>Ans.</span> {{correct_answer[i]}}</div>
               {%endfor%}
             </li>
           </ol>
+        </div>
+        <div class="submit">
+          <form action="/clear" method="post">
+            <input type="hidden" name="dashboard" value="dashboard" />
+            <input
+              type="submit"
+              name="dashboard"
+              class="register_btn"
+              value="Go To Dashboard"
+            />
+          </form>
         </div>
       </div>
     </div>

@@ -1,4 +1,4 @@
-from flask import render_template, Blueprint, request, session
+from flask import render_template, Blueprint, request, session, redirect, url_for
 from sqlalchemy.orm import sessionmaker
 from data import engine, userScore
 from dashboard import Questions, options, correct_answer, score_table
@@ -9,7 +9,9 @@ Session=sessionmaker(bind=engine)
 SESSION=Session()
 
 quiz=Blueprint("quiz", __name__)
+
 paired_options=[]
+Questions_correct=[]
 
 # function for shuffling options
 def shuffle():
@@ -46,6 +48,12 @@ def result():
             correct=correct+1
 
     count(correct)
+    for i in Questions:
+        Questions_correct.append(i)
+
+    options.clear()
+    paired_options.clear()
+    Questions.clear()
     return render_template('result.html', length=length, correct=correct)
 
 # function for saving number of previous correct answers in database
@@ -62,5 +70,13 @@ def count(correct):
 # link for displaying correct answers
 @quiz.route('/correct', methods=['GET', 'POST'])
 def correct():
-     length=len(Questions)
-     return render_template("correct.html", Questions=Questions, correct_answer=correct_answer, length=length)
+    length=len(Questions_correct)
+    return render_template("correct.html", Questions_correct=Questions_correct, correct_answer=correct_answer, length=length)
+
+# for clearing lists
+@quiz.route('/clear', methods=['GET', 'POST'])
+def clear_lists():
+    if request.method=='POST':
+        Questions_correct.clear()
+        correct_answer.clear()
+        return redirect(url_for('dashboard.index'))

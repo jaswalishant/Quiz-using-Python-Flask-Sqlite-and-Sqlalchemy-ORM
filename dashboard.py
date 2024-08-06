@@ -61,6 +61,9 @@ def get_GK_questions():
                 options.append(q.incorrect3)
         else:
             Questions.clear()
+            options.clear()
+            correct_answer.clear()
+            get_GK_questions()
     return question_table
 
 def get_comp_questions():
@@ -78,6 +81,8 @@ def get_comp_questions():
         else:
             Questions.clear()
             options.clear()
+            correct_answer.clear()
+            get_comp_questions()
     return question_table
 
 
@@ -96,6 +101,8 @@ def get_science_questions():
         else:
             Questions.clear()
             options.clear()
+            correct_answer.clear()
+            get_science_questions()
     return question_table
 
 
@@ -114,6 +121,8 @@ def get_animals_questions():
         else:
             Questions.clear()
             options.clear()
+            correct_answer.clear()
+            get_animals_questions()
     return question_table
 
 
@@ -132,6 +141,8 @@ def get_sports_questions():
         else:
             Questions.clear()
             options.clear()
+            correct_answer.clear()
+            get_sports_questions()
     return question_table
         
 # link for logout
